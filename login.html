@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Travel Mate - Login</title>
+  <style>
+    /* (YOUR EXACT SAME CSS — UNCHANGED) */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(180deg,#f0f8ff 0%,#ffffff 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;color:#333;}
+    .login-container{background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);padding:40px;width:100%;max-width:400px;margin:20px;}
+    .logo{width:60px;height:60px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 30px auto;box-shadow:0 4px 15px rgba(102,126,234,0.3);}
+    .logo-icon{font-size:28px;color:white;}
+    .welcome-text{text-align:center;margin-bottom:40px;}
+    .welcome-text h1{font-size:28px;font-weight:700;color:#2d3748;margin-bottom:8px;}
+    .welcome-text p{font-size:16px;color:#718096;line-height:1.5;}
+    .form-group{margin-bottom:24px;}
+    .form-group label{display:block;font-size:14px;font-weight:600;color:#2d3748;margin-bottom:8px;}
+    .form-group input{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px;transition:all .3s ease;background:white;}
+    .form-group input:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.1);}
+    .login-btn{width:100%;padding:16px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:.3s;margin-bottom:24px;text-transform:uppercase;letter-spacing:.5px;}
+    .login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(102,126,234,.3);}
+    .signup-link{text-align:center;}
+    .signup-link p{color:#718096;font-size:14px;}
+    .signup-link a{color:#667eea;text-decoration:none;font-weight:600;transition:.3s;}
+    .signup-link a:hover{color:#764ba2;text-decoration:underline;}
+    .back-home{position:fixed;top:20px;left:20px;background:rgba(255,255,255,.9);border:2px solid #e2e8f0;color:#667eea;padding:10px 20px;border-radius:25px;cursor:pointer;font-weight:500;transition:.3s;text-decoration:none;font-size:14px;}
+    .back-home:hover{background:white;border-color:#667eea;transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,.2);}
+    @media(max-width:480px){
+      .login-container{margin:10px;padding:30px 20px;}
+      .welcome-text h1{font-size:24px;}
+      .back-home{top:15px;left:15px;padding:8px 16px;font-size:12px;}
+    }
+  </style>
+</head>
+<body>
+
+<a href="trippage.html" class="back-home">← Back to Home</a>
+  
+<div class="login-container">
+  <div class="logo"><span class="logo-icon">✈️</span></div>
+  
+  <div class="welcome-text">
+    <h1>Welcome Back</h1>
+    <p>Login to continue planning your perfect trips</p>
+  </div>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="password" required>
+    </div>
+    <button class="login-btn" type="submit">Login</button>
+  </form>
+
+  <div class="signup-link">
+    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+
+<script type="module">
+  // Import modular functions
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  
+  // Corrected Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBw6x-s-Qht_Dz68yH789hHRw08rIm7rs8", 
+    authDomain: "ai-travel-mate-3b805.firebaseapp.com",
+    projectId: "ai-travel-mate-3b805",
+    storageBucket: "ai-travel-mate-3b805.firebasestorage.app",
+    messagingSenderId: "259157862229",
+    appId: "1:259157862229:web:216b02479e26f2fc2cf1dc"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const button = document.querySelector('.login-btn');
+    
+    button.textContent = 'Logging in...';
+    button.disabled = true;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Successful login
+        alert(`Welcome back, ${userCredential.user.email}!`);
+        // Redirect to the trip-planner page
+        window.location.href = 'trip-planner.html';
+      })
+      .catch((error) => {
+        // Handle errors (e.g., wrong password, user not found)
+        const errorMessage = error.message.replace('Firebase: ', '');
+        alert(`Login Failed: ${errorMessage}`);
+        button.textContent = 'Login';
+        button.disabled = false;
+      });
+  });
+</script>
+
+</body>
+</html>
