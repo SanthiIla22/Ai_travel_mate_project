@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Trippage</title>
+    <link href="trippage.css" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="left-section">
+                <div class="appimg">
+                    <img src="images/logo.jpg" alt="AI Travel Mate Logo" class="logo-img">
+                </div>
+                <div class="appname">AI Travel Mate</div>
+            </div>
+            <div class="nav">
+                <nav class="Home">Home</nav>
+                <nav class="About">About</nav>
+                <nav class="Contact">Contact</nav>
+            </div>
+            <div class="auth-buttons">
+                <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+                <button class="signup-btn" onclick="window.location.href='signup.html'">Sign Up</button>
+            </div>
+        </div>
+        
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="ai-tag">
+                    <span class="sparkle">✨</span>
+                    <span>AI-Powered Travel Planning</span>
+                </div>
+                <h1 class="main-headline">Plan Your Perfect Trip</h1>
+                <div class="subtitle-with-icon">
+                    <span>with AI</span>
+                    <span class="airplane-icon">✈️</span>
+                </div>
+                <p class="hero-description">Discover personalized travel itineraries crafted by AI based on your preferences, budget, and dream destinations.</p>
+                <div class="cta-buttons">
+                    <button class="primary-btn">Start Planning Now</button>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import modular functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        
+        // Corrected Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBw6x-s-Qht_Dz68yH789hHRw08rIm7rs8", 
+            authDomain: "ai-travel-mate-3b805.firebaseapp.com",
+            projectId: "ai-travel-mate-3b805",
+            storageBucket: "ai-travel-mate-3b805.firebasestorage.app",
+            messagingSenderId: "259157862229",
+            appId: "1:259157862229:web:216b02479e26f2fc2cf1dc"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check if user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, redirect them to the trip planner page
+                window.location.href = 'trip-planner.html';
+            }
+            // If not signed in, stay on trippage.html (the homepage)
+        });
+    </script>
+</body>
+</html>
