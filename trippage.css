@@ -1,0 +1,523 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(154, 234, 5, 0.3) 100%), url('background.jpg'); */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(154, 234, 5, 0.3) 100%), url('background.jpg'); */
+    
+}
+.header{
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 80px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    position: relative !important;
+    padding: 0 20px !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+    z-index: 100 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+}
+.left-section{
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+    flex-shrink: 0 !important;
+    max-width: 300px !important;
+}
+
+.appimg{
+    width: 55px !important;
+    height: 55px !important;
+    border-radius: 12px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+    overflow: hidden !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.logo-img{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.appname{
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #2d3748 !important;
+    flex-shrink: 0 !important;
+}
+.nav{
+    display: flex !important;
+    gap: 40px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    align-items: center !important;
+}
+
+.nav nav{
+    color: #4a5568;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav nav:hover{
+    color: #667eea;
+}
+
+.auth-buttons{
+    display: flex !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+}
+
+.login-btn, .signup-btn{
+    padding: 10px 18px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.login-btn{
+    background-color: transparent !important;
+    color: #4a5568 !important;
+    border: 2px solid #e2e8f0 !important;
+}
+
+.login-btn:hover{
+    background-color: #f7fafc !important;
+    border-color: #667eea !important;
+    color: #667eea !important;
+}
+
+.signup-btn{
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+}
+
+.signup-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+}
+
+/* Hero Section */
+.hero-section{
+    flex: 1;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.374) 100%), 
+                url('https://as2.ftcdn.net/v2/jpg/00/65/48/25/1000_F_65482539_C0ZozE5gUjCafz7Xq98WB4dW6LAhqKfs.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content{
+    max-width: 800px;
+    padding: 0 20px;
+    z-index: 2;
+}
+
+.ai-tag{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.sparkle{
+    font-size: 16px;
+}
+
+.main-headline{
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle-with-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #f093fb;
+}
+
+.airplane-icon{
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.hero-description{
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.primary-btn, .secondary-btn{
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 200px;
+}
+
+.primary-btn{
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+}
+
+.primary-btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(245, 87, 108, 0.5);
+}
+
+.secondary-btn{
+    background-color: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.secondary-btn:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: translateY(-3px);
+}
+
+.scroll-indicator{
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.scroll-dot{
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* How It Works Section */
+.how-it-works-section{
+    background: white;
+    padding: 80px 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.how-it-works-content{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.section-title{
+    font-size: 3rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.section-subtitle{
+    font-size: 1.2rem;
+    color: #718096;
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.steps-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.step-card{
+    background: white;
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f7fafc;
+}
+
+.step-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.step-icon{
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.step-icon .icon{
+    font-size: 32px;
+    color: white;
+}
+
+.step-number{
+    font-size: 14px;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.step-title{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+
+.step-description{
+    font-size: 1rem;
+    color: #718096;
+    line-height: 1.6;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header{
+        padding: 0 15px !important;
+        height: 70px !important;
+    }
+    
+    .appname{
+        font-size: 18px !important;
+    }
+    
+    .nav{
+        gap: 15px !important;
+        font-size: 14px !important;
+    }
+    
+    .auth-buttons{
+        gap: 8px !important;
+    }
+    
+    .login-btn, .signup-btn{
+        padding: 8px 14px !important;
+        font-size: 11px !important;
+    }
+    
+    .main-headline{
+        font-size: 2.5rem;
+    }
+    
+    .subtitle-with-icon{
+        font-size: 1.5rem;
+    }
+    
+    .hero-description{
+        font-size: 1rem;
+    }
+    
+    .cta-buttons{
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .primary-btn, .secondary-btn{
+        min-width: 250px;
+        padding: 14px 28px;
+    }
+    
+    .section-title{
+        font-size: 2.5rem;
+    }
+    
+    .steps-container{
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .step-card{
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header{
+        padding: 0 10px !important;
+    }
+    
+    .left-section{
+        gap: 8px !important;
+    }
+    
+    .appimg{
+        width: 45px !important;
+        height: 45px !important;
+    }
+    
+    .logo-img{
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .appname{
+        font-size: 16px !important;
+    }
+    
+    .nav{
+        gap: 10px !important;
+        font-size: 12px !important;
+    }
+    
+    .auth-buttons{
+        gap: 6px !important;
+    }
+    
+    .login-btn, .signup-btn{
+        padding: 6px 10px !important;
+        font-size: 10px !important;
+    }
+    
+    .main-headline{
+        font-size: 2rem;
+    }
+    
+    .subtitle-with-icon{
+        font-size: 1.2rem;
+    }
+    
+    .airplane-icon{
+        font-size: 1.5rem;
+    }
+    
+    .hero-description{
+        font-size: 0.9rem;
+    }
+    
+    .primary-btn, .secondary-btn{
+        min-width: 200px;
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+    
+    .section-title{
+        font-size: 2rem;
+    }
+    
+    .section-subtitle{
+        font-size: 1rem;
+    }
+    
+    .how-it-works-content{
+        padding: 0 20px;
+    }
+    
+    .step-icon{
+        width: 60px;
+        height: 60px;
+    }
+    
+    .step-icon .icon{
+        font-size: 24px;
+    }
+    
+    .step-title{
+        font-size: 1.2rem;
+    }
+    
+    .step-description{
+        font-size: 0.9rem;
+    }
+}
