@@ -1,0 +1,10 @@
+{
+  "name": "trip-processor",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to process trip data, call Google Places API, and save to Firestore.",
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "node-fetch": "^2.6.1"
+  }
+}
