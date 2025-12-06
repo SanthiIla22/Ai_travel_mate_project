@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Travel Mate - Live Journey</title>
+    <style>
+        /* Base Styles (Matching trip-planner.html) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            height: 100%; 
+            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Match trip-planner background */
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%), url(images/backend.jpg);
+            background-size: cover; background-position: center center; background-attachment: fixed; background-repeat: no-repeat;
+            color: #333;
+        }
+
+        /* Header (Matching trip-planner.html) */
+        .header { display:flex; justify-content:space-between; align-items:center; width:100%; height:80px; 
+            background-color:rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px); position: relative; padding: 0 20px; 
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1); z-index: 200; /* High z-index to sit above the map */
+        }
+        .left-section { display:flex; align-items:center; gap:20px; }
+        .appimg { width:55px; height:55px; border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(102,126,234,0.3); overflow:hidden; }
+        .logo-img { width:100%; height:100%; object-fit:cover; border-radius:12px; }
+        .appname { font-size:24px; font-weight:700; color:#2d3748; }
+        .back-home { background: rgba(255,255,255,0.9); border:2px solid #e2e8f0; color:#667eea; padding:10px 20px; border-radius:25px; cursor:pointer; 
+            font-weight:500; transition:all .3s ease; text-decoration:none; font-size:14px; 
+        }
+        .back-home:hover { background:white; border-color:#667eea; transform:translateY(-2px); box-shadow: 0 4px 15px rgba(102,126,234,0.2); }
+
+        /* Map and Content Structure */
+        #main-content {
+            position: absolute; /* Place content over background */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        #map-container {
+            flex-grow: 1; /* Map takes remaining space */
+            position: relative;
+            /* Adjust map container height to fill space below header */
+            height: calc(100vh - 80px); 
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Overlay elements */
+        #travel-overlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 10;
+        }
+
+        #travel-overlay h1 {
+            color: #38a169;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        #travel-overlay p {
+            color: #4a5568;
+            font-size: 1rem;
+        }
+
+        /* Current Location Marker Style */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-content">
+        <div class="header">
+            <div class="left-section">
+                <div class="appimg">
+                    <img src="images/logo.jpg" alt="AI Travel Mate Logo" class="logo-img">
+                </div>
+                <div class="appname">AI Travel Mate</div>
+            </div>
+            <a id="stop-tracking-btn" href="trip-planner.html" class="back-home">← Stop Tracking & Go Back</a>
+        </div>
+
+        <div id="map-container">
+            <div id="travel-overlay">
+                <h1>🟢 Live Journey Mode Activated</h1>
+                <p>Tracking your location along the route...</p>
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let routeData, placesData;
+        let currentLocationMarker = null;
+        let watchId = null;
+
+        // Function to initialize the map and start rendering
+        function initMap() {
+            // 1. Get stored data
+            const routeJSON = localStorage.getItem('selectedRouteData');
+            const placesJSON = localStorage.getItem('nearbyPlacesData');
+            
+            if (!routeJSON) {
+                alert("No route data found. Please select a route in the trip planner.");
+                window.location.href = 'trip-planner.html';
+                return;
+            }
+
+            routeData = JSON.parse(routeJSON);
+            placesData = JSON.parse(placesJSON);
+            
+            // 2. Initialize the Map
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 20.5937, lng: 78.9629 }, // Default center
+                zoom: 10,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+            });
+            
+            // 3. Draw the single route
+            drawRoute();
+            
+            // 4. Draw the places (markers)
+            drawPlaces();
+            
+            // 5. Start the user tracking
+            startGeolocationTracking();
+            
+            // 6. Set up the stop tracking button event
+            document.getElementById('stop-tracking-btn').addEventListener('click', stopTrackingAndClearData);
+        }
+        
+        // Stops geolocation, clears local storage, and then redirects (though the href handles redirection)
+        function stopTrackingAndClearData() {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+            // Clear the data so when the user returns to the planner, they see a fresh map
+            localStorage.removeItem('selectedRouteData');
+            localStorage.removeItem('nearbyPlacesData');
+        }
+
+        // Draws the single selected route using a Polyline
+        function drawRoute() {
+            // Decode the polyline points string into LatLng objects
+            const decodedPath = google.maps.geometry.encoding.decodePath(routeData.overview_polyline.points);
+
+            const polyline = new google.maps.Polyline({
+                path: decodedPath,
+                geodesic: true,
+                strokeColor: '#38A169', 
+                strokeOpacity: 1.0,
+                strokeWeight: 8
+            });
+
+            polyline.setMap(map);
+            
+            // Fit map to the route's bounds
+            map.fitBounds(routeData.bounds);
+
+            // Add Start and End markers (using the stored addresses/positions)
+            const startMarker = new google.maps.Marker({
+                position: decodedPath[0],
+                map: map,
+                label: 'A',
+                title: routeData.legs[0].start_address,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            });
+
+            const endMarker = new google.maps.Marker({
+                position: decodedPath[decodedPath.length - 1],
+                map: map,
+                label: 'B',
+                title: routeData.legs[0].end_address,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            });
+        }
+        
+        // Draws the markers for the relevant places
+        function drawPlaces() {
+            placesData.forEach(place => {
+                const marker = new google.maps.Marker({
+                    map: map,
+                    position: place.position,
+                    title: place.title,
+                    // Recreate the custom icon based on stored properties
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: place.icon.fillColor,
+                        fillOpacity: 0.9,
+                        scale: place.icon.scale,
+                        strokeColor: '#ffffff',
+                        strokeWeight: 1
+                    }
+                });
+                // Add a simple InfoWindow on click
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<strong>${place.title}</strong>`
+                });
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        }
+
+        // Starts Geolocation Tracking and updates the map
+        function startGeolocationTracking() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+            
+            const updateMap = (position) => {
+                const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                if (currentLocationMarker === null) {
+                    // Create marker on first update
+                    currentLocationMarker = new google.maps.Marker({
+                        map: map,
+                        position: latLng,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            fillColor: '#2196F3',
+                            fillOpacity: 1,
+                            scale: 8,
+                            strokeColor: '#fff',
+                            strokeWeight: 2
+                        },
+                        title: 'Your Location'
+                    });
+                } else {
+                    currentLocationMarker.setPosition(latLng);
+                }
+                
+                // Center map on the user's location
+                map.setCenter(latLng);
+                map.setZoom(17); // High zoom for active tracking
+            };
+
+            const errorHandler = (error) => {
+                console.warn(`Geolocation error: ${error.code} ${error.message}`);
+                document.getElementById('travel-overlay').querySelector('p').textContent = 'Tracking failed. Check location permissions.';
+            };
+
+            // Start watching location for live updates
+            watchId = navigator.geolocation.watchPosition(updateMap, errorHandler, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        }
+    </script>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeAcrbFyaVO2bxPxR2srbYyOL3fa9kmJE&callback=initMap&libraries=geometry,places">
+    </script>
+</body>
+</html>
