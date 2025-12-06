@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Travel Mate - Sign Up</title>
+  <style>
+    /* Your original CSS remains unchanged */
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:linear-gradient(180deg,#f0f8ff 0%,#ffffff 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;color:#333;}
+    .signup-container {background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);padding:40px;width:100%;max-width:400px;margin:20px;}
+    .logo {width:60px;height:60px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 30px auto;box-shadow:0 4px 15px rgba(102,126,234,0.3);}
+    .logo-icon {font-size:28px;color:white;}
+    .welcome-text {text-align:center;margin-bottom:40px;}
+    .welcome-text h1 {font-size:28px;font-weight:700;color:#2d3748;margin-bottom:8px;}
+    .welcome-text p {font-size:16px;color:#718096;line-height:1.5;}
+    .form-group {margin-bottom:24px;}
+    .form-group label {display:block;font-size:14px;font-weight:600;color:#2d3748;margin-bottom:8px;}
+    .form-group input {width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px;transition:all 0.3s ease;background:white;}
+    .form-group input:focus {outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.1);}
+    .signup-btn {width:100%;padding:16px;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;border:none;border-radius:25px;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.3s ease;margin-bottom:24px;text-transform:uppercase;letter-spacing:0.5px;box-shadow:0 4px 15px rgba(245,87,108,0.3);}
+    .signup-btn:hover {transform:translateY(-2px);box-shadow:0 8px 25px rgba(245,87,108,0.4);}
+    .signup-btn:active {transform:translateY(0);}
+    .login-link {text-align:center;}
+    .login-link p {color:#718096;font-size:14px;}
+    .login-link a {color:#667eea;text-decoration:none;font-weight:600;transition:color 0.3s ease;}
+    .login-link a:hover {color:#764ba2;text-decoration:underline;}
+    .back-home {position:fixed;top:20px;left:20px;background:rgba(255,255,255,0.9);border:2px solid #e2e8f0;color:#667eea;padding:10px 20px;border-radius:25px;cursor:pointer;font-weight:500;transition:all 0.3s ease;text-decoration:none;font-size:14px;}
+    .back-home:hover {background:white;border-color:#667eea;transform:translateY(-2px);box-shadow:0 4px 15px rgba(102,126,234,0.2);}
+    .password-match-error {color:#e53e3e;font-size:12px;margin-top:5px;display:none;}
+    .password-match-success {color:#38a169;font-size:12px;margin-top:5px;display:none;}
+    @media (max-width:480px){.signup-container{margin:10px;padding:30px 20px;}.welcome-text h1{font-size:24px;}.back-home{top:15px;left:15px;padding:8px 16px;font-size:12px;}}
+  </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <a href="trippage.html" class="back-home">← Back to Home</a>
+  
+  <div class="signup-container">
+    <div class="logo">
+      <span class="logo-icon">✈️</span>
+    </div>
+    
+    <div class="welcome-text">
+      <h1>Create Account</h1>
+      <p>Start your journey to amazing travel experiences</p>
+    </div>
+
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+        <div class="password-match-error" id="passwordError">Passwords do not match</div>
+        <div class="password-match-success" id="passwordSuccess">Passwords match ✓</div>
+      </div>
+
+      <button type="submit" class="signup-btn">Sign Up</button>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+    // Firebase configuration (UPDATED with your credentials)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw6x-s-Qht_Dz68yH789hHRw08rIm7rs8", 
+      authDomain: "ai-travel-mate-3b805.firebaseapp.com",
+      projectId: "ai-travel-mate-3b805",
+      storageBucket: "ai-travel-mate-3b805.firebasestorage.app",
+      messagingSenderId: "259157862229",
+      appId: "1:259157862229:web:216b02479e26f2fc2cf1dc"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    // Initialize Firestore
+    const db = firebase.firestore(); 
+
+    // Password matching validation (unchanged)
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordError = document.getElementById('passwordError');
+    const passwordSuccess = document.getElementById('passwordSuccess');
+
+    function checkPasswordMatch() {
+      if (confirmPassword.value === '') {
+        passwordError.style.display = 'none';
+        passwordSuccess.style.display = 'none';
+        return;
+      }
+
+      if (password.value === confirmPassword.value) {
+        passwordError.style.display = 'none';
+        passwordSuccess.style.display = 'block';
+        confirmPassword.style.borderColor = '#38a169';
+      } else {
+        passwordError.style.display = 'block';
+        passwordSuccess.style.display = 'none';
+        confirmPassword.style.borderColor = '#e53e3e';
+      }
+    }
+
+    confirmPassword.addEventListener('input', checkPasswordMatch);
+    password.addEventListener('input', checkPasswordMatch);
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const passwordValue = password.value;
+      const confirmPasswordValue = confirmPassword.value;
+
+      if (passwordValue !== confirmPasswordValue) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      const button = document.querySelector('.signup-btn');
+      button.textContent = 'Creating Account...';
+      button.disabled = true;
+
+      // 1. Firebase Authentication: Create User
+      auth.createUserWithEmailAndPassword(email, passwordValue)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          
+          // Set display name in Auth profile (Optional but good practice)
+          user.updateProfile({ displayName: username });
+          
+          // 2. Firestore Write: Save user data to 'users' collection
+          // We use the user's unique ID (user.uid) as the document ID.
+          return db.collection('users').doc(user.uid).set({
+            uid: user.uid,
+            username: username,
+            email: email,
+            // Store the timestamp for when the user was created
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          // 3. Success: Both Auth and Firestore write completed
+          alert(`Account created successfully! Welcome ${username} to AI Travel Mate!`);
+          window.location.href = 'trip-planner.html'; // Redirect to the main app page
+        })
+        .catch((error) => {
+          // Failure: Handle errors from Auth or Firestore write
+          console.error("Signup Error:", error);
+          alert(`Signup Failed: ${error.message.replace('Firebase: ', '')}`);
+          
+          // Reset button state
+          button.textContent = 'Sign Up';
+          button.disabled = false;
+        });
+    });
+</script>
